@@ -3,11 +3,22 @@ from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
 stock = []
+# items with quantity below this number are shown as low stock
+LOW_STOCK_LIMIT = 10
+
+
+# find the items that are running low
+def get_low_stock():
+    low_items = []
+    for item in stock:
+        if item["quantity"] < LOW_STOCK_LIMIT:
+            low_items.append(item)
+    return low_items
 
 @app.route("/")
 def home():
-    return render_template("index.html", stock=stock, version="v2")
-
+    low_stock = get_low_stock()
+    return render_template("index.html", stock=stock, low_stock=low_stock, version="v3")
 
 @app.route("/add", methods=["POST"])
 def add_stock():

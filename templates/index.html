@@ -27,12 +27,20 @@
             <th>Item Name</th>
             <th>Quantity</th>
             <th>Price</th>
+            <th>Update Quantity</th>
         </tr>
         {% for item in stock %}
         <tr>
             <td>{{ item.name }}</td>
             <td>{{ item.quantity }}</td>
             <td>{{ item.price }}</td>
+            <td>
+                <form action="/update" method="POST">
+                    <input type="hidden" name="index" value="{{ loop.index0 }}">
+                    <input type="number" name="quantity" min="0" value="{{ item.quantity }}" required>
+                    <button type="submit">Update</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </table>

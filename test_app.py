@@ -1,4 +1,4 @@
-from app import app, stock
+from app import app, stock, get_low_stock
 
 def setup_function():
     stock.clear()
@@ -46,3 +46,26 @@ def test_update_invalid_item():
     client = app.test_client()
     response = client.post("/update", data={"index": "5", "quantity": "10"})
     assert response.status_code == 302
+# test 8: item below 10 should be in the low stock list
+def test_low_stock_item_found():
+    client = app.test_client()
+    client.post("/add", data={"name": "Pen", "quantity": "5", "price": "10"})
+    low_items = get_low_stock()
+    assert len(low_items) == 1
+    assert low_items[0]["name"] == "Pen"
+
+
+# test 9: item with enough stock should not be in the list
+def test_enough_stock_not_in_alert():
+    client = app.test_client()
+    client.post("/add", data={"name": "Book", "quantity": "10", "price": "50"})
+    low_items = get_low_stock()
+    assert len(low_items) == 0
+
+
+# test 10: alert should show on the home page
+def test_alert_shown_on_page():
+    client = app.test_client()
+    client.post("/add", data={"name": "Pen", "quantity": "2", "price": "10"})
+    response = client.get("/")
+    assert b"these items are low on stock" in response.data

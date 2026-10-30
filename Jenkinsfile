@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'bhxrxth0409/inventory-system'
-        IMAGE_TAG = 'v2'
+        IMAGE_TAG = 'v3'
     }
 
     stages {

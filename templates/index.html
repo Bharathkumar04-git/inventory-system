@@ -8,6 +8,7 @@
         table { border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid black; padding: 8px 15px; }
         th { background-color: #dddddd; }
+        .alert { background-color: #ffcccc; border: 1px solid red; padding: 10px; width: 400px; }
     </style>
 </head>
 <body>
@@ -20,6 +21,19 @@
         <input type="number" name="price" placeholder="Price" min="0" step="0.01" required>
         <button type="submit">Add</button>
     </form>
+    <h3>Low Stock Alert</h3>
+    {% if low_stock %}
+    <div class="alert">
+        <b>Warning: these items are low on stock</b>
+        <ul>
+            {% for item in low_stock %}
+            <li>{{ item.name }} - only {{ item.quantity }} left</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <p>All items have enough stock.</p>
+    {% endif %}
 
     <h3>Stock List</h3>
     <table>

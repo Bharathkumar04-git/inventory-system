@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-v3
+  template:
+    metadata:
+      labels:
+        app: inventory-v3
+    spec:
+      containers:
+      - name: inventory
+        image: bhxrxth0409/inventory-system:v3
+        ports:
+        - containerPort: 5000
